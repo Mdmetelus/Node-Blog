@@ -2,7 +2,7 @@
 const express = require('express');
 const dbU = require('./data/helpers/userDb');
 const morgan = require('morgan');
-// const helmet = require('helmet');
+const helmet = require('helmet');
 // const cors = require('cors');
 const server = express();
 
@@ -30,9 +30,6 @@ server.use(morgan('short')); // logger/tracer of activity
 // get endpoints
 //++++++++++++++++++++++++++++++++++++++++++++
 
-
-
-
     server.get('/api/users/:id', async (req, res) => {
         try {
             const id = req.params.id;
@@ -58,6 +55,42 @@ server.get("/", (req, res) => {
     res.status(200)
         .send("<h1> Hello World! Welcome To My APP</h1>");
   });
+
+//++++++++++++++++++++++++++++++++++++++++
+// - post stuff here
+//++++++++++++++++++++++++++++++++++++++++
+
+const goodName = (req, res, next) => {
+    const { name } = req.body;
+
+    if(!name) {
+        res.status(400).json({error: 'You do not have not entered a valid name', err});
+        console.log("++++ERROR missing name!! +++");
+
+        next();
+    } else {
+        next();
+    }
+}
+
+server.post('/api/users', goodName, async (req, res) => {
+    const newUser = req.body;
+
+    try {
+        const id = await dbU.insert(newUser);
+        console.log(newUser);
+        const userIn = await dbU.get(id);
+        console.log(userIn, id);
+        res.status(201).json(id);
+
+    } catch (error) {
+        res.status(500).json({ message: 'the Post Attempt failed, No  Name added', error: err});
+
+    }
+
+});
+
+
 
 //++++++++++++++++++++++++++++++++++++
 //++++++Listener      +++++++++++

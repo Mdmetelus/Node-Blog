@@ -30,22 +30,29 @@ server.use(morgan('short')); // logger/tracer of activity
 // get endpoints
 //++++++++++++++++++++++++++++++++++++++++++++
 
-//   server.get("/api/posts/:userId", async (req, res) => {
-//     const userId = req.params.id;
-//     console.log(userId);
-//     try {
-//       const eachUser = await dbU.getUserPosts(userId);
-//       console.log(eachUser);
-  
-//       if ( eachUser.length === 0 ) {
-//         res.status(404).json({ message: `User does not exist.`});
-//       }
-//       res.status(200).json(post);
-//     } catch (error) {
-//       res.status(500).json({ message: `We can't find the hommie, please try again later!` });
-//     }
-  
-  
+
+
+
+    server.get('/api/users/:id', async (req, res) => {
+        try {
+            const id = req.params.id;
+            const eachUser = await dbU.get(id);
+            console.log(eachUser);
+            res.status(200).json({eachUser});
+        } catch (error) {
+            res.status(500).json({message: `failed to get user`});
+        }
+       });
+
+    server.get('/api/users', async (req, res) => {
+        try {
+            const all = await dbU.get();
+            console.log(all);
+            res.status(200).json(all);
+        } catch (error) {
+            res.status(500).json({message: `failed to get All the users`});
+        }
+    });
 
 server.get("/", (req, res) => {
     res.status(200)
@@ -56,6 +63,6 @@ server.get("/", (req, res) => {
 //++++++Listener      +++++++++++
 //++++++++++++++++++++++++++++++++++++
 
-// server.listen(PORT, () => console.log(`The Server is listening on port ${PORT}`));
+server.listen(PORT, () => console.log(`The Server is listening on port ${PORT}`));
 
-module.exports = server;
+// module.exports = server;

@@ -30,6 +30,26 @@ server.use(morgan('short')); // logger/tracer of activity
 // get endpoints
 //++++++++++++++++++++++++++++++++++++++++++++
 
+//   server.get("/api/users/:id/:userId", async (req, res) => {
+
+//       const userId = req.params.userId;
+//       console.log(userId);
+//       try {
+//         const eachUser = await dbU.getUserPosts(userId);
+//         console.log(eachUser);
+    
+//         if ( eachUser.length === 0 ) {
+//           res.status(404).json({ message: `User does not exist.`});
+//         }
+  
+//         res.status(200).json(post);
+  
+//       } catch (error) {
+//         res.status(500).json({ message: `We can't find the hommie, please try again later!`});
+//       }
+//   });
+
+
     server.get('/api/users/:id', async (req, res) => {
         try {
             const id = req.params.id;
@@ -87,6 +107,35 @@ server.post('/api/users', goodName, async (req, res) => {
         res.status(500).json({ message: 'the Post Attempt failed, No  Name added', error: err});
 
     }
+
+});
+
+//++++++++++++++++++++++++++++++++++++++++
+// - update  stuff here
+//++++++++++++++++++++++++++++++++++++++++
+
+
+// server.update('/api/users', goodName, async (req, res) => {
+//     const { id } = req.params;
+//     const changes = req.body;
+//     const him = res.body.id;
+
+//     try {
+//         const changer = await dbU.update({ id, changes })
+
+//     } catch (error) {
+
+//     }
+// });
+
+
+
+//++++++++++++++++++++++++++++++++++++++++
+// - delete stuff here
+//++++++++++++++++++++++++++++++++++++++++
+
+server.delete("/api/users/:id", async (req, res) => {
+    const id = req.params.id;
 
 });
 

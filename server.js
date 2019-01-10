@@ -118,11 +118,12 @@ server.post('/api/users', goodName, async (req, res) => {
 // - update  stuff here
 //++++++++++++++++++++++++++++++++++++++++
 
-server.update('/api/users/:id', async (req, res) => {
+server.put('/api/users/:id', async (req, res) => {
   const {id} = req.params;
-  const {changes} = req.body;
+  const { changes } = req.body;
   // const him = res.body.id;
   try {
+
     const userToChange = await dbU.get(id);
     if (userToChange === 0) {
       return res.status (400).json ({message: 'missing name or id'});
@@ -135,12 +136,13 @@ server.update('/api/users/:id', async (req, res) => {
     }
     res.status(200).json(userUpdated);
     console.log(userUpdated);
+
   } catch (error) {
     res.status(500)
       .json({message: 'the Put Attempt failed, No  change added', error: err});
   }
 
-  
+
 });
 
 //++++++++++++++++++++++++++++++++++++++++

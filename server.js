@@ -136,6 +136,20 @@ server.post('/api/users', goodName, async (req, res) => {
 
 server.delete("/api/users/:id", async (req, res) => {
     const id = req.params.id;
+    console.log(id);
+
+    try {
+        const leaverLater = await dbU.get(id);
+        const gonnerNow = await dbU.remove(id);
+        console.log(id);
+        if ( gonnerNow === 1 ) {
+            res.status(200).json(leaverLater);
+        }
+
+    } catch (error){
+        res.status(500),json({ error: "The post could not be removed" });
+
+    }
 
 });
 
